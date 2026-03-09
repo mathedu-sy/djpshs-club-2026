@@ -3,63 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 대전생활과학고 동아리 신청</title>
+    <title>2026 대전생활과학고 3학년 동아리 신청</title>
     <style>
         body { font-family: 'Malgun Gothic', sans-serif; padding: 20px; background-color: #f0f2f5; color: #333; max-width: 500px; margin: 0 auto; }
         .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 15px; }
-        h2 { text-align: center; color: #004792; margin-top: 0; margin-bottom: 20px; }
+        h2 { text-align: center; color: #004792; margin-top: 0; margin-bottom: 10px; }
+        .sub-title { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 20px; display: block; }
         label { display: block; margin-bottom: 5px; font-size: 0.95rem; color: #555; }
         input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 1rem; font-weight: bold; }
-        
         button { border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         button:active { opacity: 0.8; }
         button:disabled { background: #ccc !important; cursor: not-allowed; }
-
         .status-box { background: #e7f0ff; padding: 15px; border-radius: 10px; border: 1px solid #b3d1ff; margin-bottom: 20px; text-align: center; }
         .cancel-btn { background: #dc3545; color:white; padding: 6px 15px; font-size: 0.9rem; margin-top: 10px; }
-
-        /* 리스트 헤더 영역 */
-        .list-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 10px 0; 
-            border-bottom: 2px solid #004792;
-            margin-top: 10px;
-        }
-        
-        /* [수정] '동아리 명' 글씨 크기를 실제 동아리 이름과 동일하게(1.05rem) 설정 */
+        .list-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 2px solid #004792; margin-top: 10px; }
         .list-label { flex: 1; font-size: 1.05rem; font-weight: bold; color: #004792; }
-        
-        /* 새로고침 버튼 크기 (신청 버튼 80px보다 작게 70px) */
-        .mini-refresh-btn {
-            background: #004792;
-            color: white;
-            padding: 6px 0;
-            width: 70px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            text-align: center;
-        }
-
+        .mini-refresh-btn { background: #004792; color: white; padding: 6px 0; width: 70px; border-radius: 4px; font-size: 0.8rem; text-align: center; }
         .club-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 15px 0; }
         .club-info { flex: 1; }
         .club-name { font-size: 1.05rem; font-weight: bold; display: block; margin-bottom: 3px; }
         .club-count { font-size: 0.9rem; color: #666; }
         .full { color: #dc3545; font-weight: bold; }
-
         .apply-btn { width: 80px; padding: 12px 0; background: #004792; color: white; font-size: 1rem; }
-
         #loading-overlay { display: none; text-align: center; color: #004792; font-weight: bold; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:1000; padding-top:50%; }
         .timer-info { font-size: 0.85rem; color: #d63384; text-align: center; margin-bottom: 15px; font-weight: bold; cursor: pointer; }
         .hidden { display: none; }
+        .grade-badge { background: #004792; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.8rem; vertical-align: middle; margin-right: 5px; }
     </style>
 </head>
 <body>
 
     <div id="login-section" class="card">
-        <h2>학생 인증</h2>
+        <!-- 태그 오류 수정 완료 -->
+        <h2><span class="grade-badge">2026학년도</span> 3학년 동아리 신청</h2>
+        <span class="sub-title">2026학년도 대전생활과학고등학교 3학년 동아리 신청 페이지 입니다. 본인 학번(4자리)과 이름을 입력하세요.</span>
+        
         <div id="time-notice" class="timer-info" onclick="devMode()">서버 시간 확인 중...</div>
+        
         <div>
             <label><strong>학번</strong>을 입력하세요.</label>
             <input type="number" id="studentId" placeholder="예: 3101" inputmode="numeric" oninput="vId(this)">
@@ -72,14 +52,12 @@
     </div>
 
     <div id="club-section" class="card hidden">
-        <h2>동아리 신청/확인</h2>
+        <h2>동아리 선택</h2>
         <div id="my-status" class="status-box hidden"></div>
-
         <div class="list-header">
             <span class="list-label">동아리 명</span>
             <button class="mini-refresh-btn" onclick="renderClubs()">새로고침</button>
         </div>
-
         <div id="loading-overlay">처리 중...</div>
         <div id="club-list">데이터 로딩 중...</div>
         <button onclick="location.reload()" style="background:#666; width:100%; padding:14px; color:white; margin-top:20px; font-size:1rem;">로그아웃</button>
@@ -88,10 +66,10 @@
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxlXreXZJFHZdzaf1oUTp0Sel3xSe5t28bFV2EgBA7ykjXJqQQzdBmjdkkqwPwuUVipdg/exec";
 
-        /* [수정] 신청 기간: 3월 16일 16:00 ~ 16:30 */
         const CONFIG = {
             startTime: new Date("2026-03-09T10:00:00+09:00"), 
-            endTime: new Date("2026-03-16T16:30:00+09:00")
+            endTime: new Date("2026-03-16T16:30:00+09:00"),
+            targetGrade: "3" // 3학년만 허용
         };
 
         const clubs = [
@@ -147,27 +125,44 @@
             if (isAdminMode) return;
             const notice = document.getElementById('time-notice');
             const now = await getKstTime();
-            /* [수정] 신청 안내 문구 날짜 형식 변경 */
-            if (now < CONFIG.startTime) {
-                notice.innerText = `⚠️ 신청 기간: 3.9. 10:00 ~ 3.16. 16:30`;
-            } else if (now > CONFIG.endTime) {
-                notice.innerText = `❌ 신청 종료`;
-            } else {
-                notice.innerText = `✅ 현재 신청 가능 시간입니다.`;
-            }
+            if (now < CONFIG.startTime) notice.innerText = `⚠️ 신청 기간: 3.9. 10:00 ~ 3.16. 16:30`;
+            else if (now > CONFIG.endTime) notice.innerText = `❌ 신청 종료`;
+            else notice.innerText = `✅ 현재 신청 가능 시간입니다.`;
         }
         setInterval(updateTimeNotice, 10000);
         updateTimeNotice();
 
-        function vId(el) { el.value = el.value.replace(/[^0-9]/g, '').slice(0, 4); }
+        function vId(el) { 
+            // 4자리까지만 입력 허용
+            if (el.value.length > 4) el.value = el.value.slice(0, 4);
+        }
         function vName(el) { el.value = el.value.replace(/[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, ''); }
 
         function showClubs() {
-            studentInfo.id = document.getElementById('studentId').value.trim();
-            studentInfo.name = document.getElementById('studentName').value.trim();
-            if (studentInfo.id.length !== 4 || studentInfo.name.length < 2) {
-                alert("학번과 이름을 정확히 입력하세요."); return;
+            const idInput = document.getElementById('studentId').value.trim();
+            const nameInput = document.getElementById('studentName').value.trim();
+
+            // 1. 4자리 입력 확인
+            if (idInput.length !== 4) {
+                alert("학번은 반드시 4자리여야 합니다. (예: 3101)");
+                return;
             }
+
+            // 2. 3학년인지 확인 (첫 글자 추출)
+            if (idInput.substring(0, 1) !== CONFIG.targetGrade) {
+                alert("3학년 학생만 신청할 수 있습니다.\n본인의 학년을 확인해 주세요.");
+                return;
+            }
+
+            // 3. 이름 입력 확인
+            if (nameInput.length < 2) {
+                alert("이름을 올바르게 입력해주세요.");
+                return;
+            }
+
+            studentInfo.id = idInput;
+            studentInfo.name = nameInput;
+            
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('club-section').classList.remove('hidden');
             renderClubs();
@@ -185,8 +180,8 @@
                 const myClub = data.records[studentInfo.id];
                 statusBox.classList.remove('hidden');
                 statusBox.innerHTML = myClub 
-                    ? `<div>👋 <b>${studentInfo.name}</b>님 현재 신청: <b>[${myClub}]</b></div><button class="cancel-btn" onclick="cancelApply()">신청 취소</button>`
-                    : `<div>👋 <b>${studentInfo.name}(${studentInfo.id})</b>님, 동아리를 선택하세요.</div>`;
+                    ? `<div>👋 <b>${studentInfo.name}</b>님 신청 완료: <b>[${myClub}]</b></div><button class="cancel-btn" onclick="cancelApply()">신청 취소</button>`
+                    : `<div>👋 <b>${studentInfo.name}(${studentInfo.id})</b>님, 환영합니다!</div>`;
                 listDiv.innerHTML = '';
                 const now = await getKstTime();
                 clubs.forEach(club => {
@@ -206,12 +201,12 @@
                     `;
                     listDiv.appendChild(item);
                 });
-            } catch(e) { listDiv.innerHTML = '데이터 업데이트 오류'; }
+            } catch(e) { listDiv.innerHTML = '데이터 로딩 오류'; }
             finally { loader.style.display = 'none'; }
         }
 
         async function askPwAndSub(clubName, limit) {
-            const pw = prompt(`[${clubName}] 신청 비밀번호(숫자 4자)를 설정하세요.`);
+            const pw = prompt(`[${clubName}] 신청 비밀번호(숫자 4자)를 설정하세요.\n취소 시 필요합니다.`);
             if (!pw || !/^\d{4}$/.test(pw)) return alert("숫자 4자를 입력하세요.");
             await sendData({ 
                 studentId: studentInfo.id, name: studentInfo.name, password: pw, 
@@ -220,7 +215,7 @@
         }
 
         async function cancelApply() {
-            const pw = prompt("신청 시 설정한 비번을 입력하세요.");
+            const pw = prompt("신청 시 설정한 비밀번호 4자를 입력하세요.");
             if (pw) await sendData({ action: "delete", studentId: studentInfo.id, password: pw });
         }
 
@@ -237,5 +232,3 @@
     </script>
 </body>
 </html>
-
-
